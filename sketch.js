@@ -1,12 +1,7 @@
-let seamin;
 let seamax;
-let beachmin;
 let beachmax;
-let grassmin;
 let grassmax;
-let mountainmin;
 let mountainmax;
-let peakmin;
 let peakmax;
 let deepseacol
 let shallowseacol
@@ -16,7 +11,8 @@ let mountaincol
 let peakcol
 
 let redrawbutton;
-
+let seed
+let randomseed
 // predefining values
 let cellsx;
 let cellsy;
@@ -24,52 +20,52 @@ let hue;
 let saturation;
 let brightness;
 
-let SEA = [0, 0.5];
-let BEACH = [0.5, 0.55];
-let GRASS = [0.55, 0.65];
-let MOUNTAIN = [0.65, 0.75];
-let PEAK = [0.75, 1];
-
-
-
-let scale = 100;
+let scale
 
 function setup() {
-  seamax = createInput(0.5, "number");
+  seed = random(0, 1000000)
+
+  seamax = createInput(0.6, "number");
   seamax.position(10, 10);
   seamax.size(40);
-  beachmax = createInput(0.55, "number");
+  beachmax = createInput(0.65, "number");
   beachmax.position(10, 35);
   beachmax.size(40);
-  grassmax = createInput(0.65, "number");
+  grassmax = createInput(0.75, "number");
   grassmax.position(10, 60);
   grassmax.size(40);
-  mountainmax = createInput(0.75, "number");
+  mountainmax = createInput(0.85, "number");
   mountainmax.position(10, 85);
   mountainmax.size(40);
   
-  deepseacol = createInput("#2d1a51", "color")
+  deepseacol = createInput("#180934", "color")
   deepseacol.position(61,10)
   deepseacol.size(50, 22)
-  shallowseacol = createInput("#266d6e", "color")
+  shallowseacol = createInput("#357d7e", "color")
   shallowseacol.position(115,10)
   shallowseacol.size(50, 22)
   beachcol = createInput("#ffe3b3", "color")
   beachcol.position(61,35)
   beachcol.size(50, 22)
-  grasscol = createInput("#1e4d1f", "color")
+  grasscol = createInput("#234d23", "color")
   grasscol.position(61,60)
   grasscol.size(50, 22)
   mountaincol = createInput("#60666c", "color")
   mountaincol.position(61,85)
   mountaincol.size(50, 22)
-  peakcol = createInput("#d9c0dd", "color")
+  peakcol = createInput("#d6cbd8", "color")
   peakcol.position(61, 110)
   peakcol.size(50, 22)
 
   redrawbutton = createButton("redraw");
-  redrawbutton.position(10, 135);
+  redrawbutton.position(10, 500);
   redrawbutton.mousePressed(rendermap);
+  scale = createSlider(20, 300, 100);
+  scale.position(10, 133);
+  scale.size(99);
+  seedinput = createInput(seed, "number")
+  seedinput.position(10, 155)
+  seedinput.size(94)
 
   createCanvas(1920, 1080);
   let numCellsx = width;
@@ -79,18 +75,13 @@ function setup() {
   noStroke();
 }
 
-
-
-
-
-
-
-function draw() {}
+function draw(){}
 
 function rendermap() {
+    noiseSeed(seedinput.value())
   for (let x = 0; x <= width; x += cellsx) {
     for (let y = 0; y <= height; y += cellsy) {
-      let altitude = noise(x / scale, y / scale);
+      let altitude = noise(x / scale.value(), y / scale.value());
       if (altitude < seamax.value()) {
         colour = lerpColor(
           color(deepseacol.value()),
