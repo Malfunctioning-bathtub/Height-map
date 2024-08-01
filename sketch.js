@@ -23,8 +23,8 @@ let brightness;
 let scale
 
 function setup() {
-  seed = random(0, 1000000)
-
+  seed = round(random(0, 1000000))
+  
   seamax = createInput(0.6, "number");
   seamax.position(10, 10);
   seamax.size(40);
@@ -74,8 +74,6 @@ function setup() {
   cellsy = height / numCellsy;
   noStroke();
 }
-
-function draw(){}
 
 function rendermap() {
     noiseSeed(seedinput.value())
