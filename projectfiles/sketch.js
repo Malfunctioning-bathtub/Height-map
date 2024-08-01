@@ -17,7 +17,8 @@ let img;
 let colour;
 
 function preload() {
-  img = loadImage("https://picsum.photos/id/27/500/500");
+  img = loadImage("https://picsum.photos/500/500");
+
 }
 
 function setup() {
